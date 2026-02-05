@@ -33,7 +33,7 @@ def gravity_effect_test():
     #With a known r, can calculate true value.
     r = 10.0
     dz = 10.0
-    Measured = G * m * dz / (r**3)
+    Measured = G * m * dz / (r * r * r)
 
     #Comparing value calculated with function to the true value to determine if they are similar.
     Calculated = gravity_effect_point(x, xm, m, G)
