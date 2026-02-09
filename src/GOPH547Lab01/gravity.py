@@ -1,3 +1,7 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
 def gravity_potential_point(x, xm, m, G=6.674e-11) :
     """Compute the gravity potential due to a point mass.
     
