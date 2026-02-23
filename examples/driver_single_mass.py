@@ -60,7 +60,7 @@ def main():
         gz_Min, gz_Max = float(gz_All.min()), float(gz_All.max())
 
         #Setting up the plots.
-        fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(12, 12), constrained_layout=True)
+        fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(6, 6), constrained_layout=True)
 
         for row, (z_Vals, X, Y, U, gz) in enumerate(Calculated):
             
