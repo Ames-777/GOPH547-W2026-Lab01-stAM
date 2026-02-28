@@ -66,21 +66,21 @@ def plot_density_sections(x, y, z, rho, bary):
 
     fig, axes = plt.subplots(3, 1, figsize=(8, 10))
 
-    c1 = axes[0].contourf(X_xz, Z_xz, rho_xz, 30, vmin=vmin, vmax=vmax)
+    c1 = axes[0].contourf(X_xz, Z_xz, rho_xz, 30, vmin=vmin, vmax=vmax, cmap="plasma")
     axes[0].plot(bary[0], bary[2], "xk", markersize=4)
     axes[0].set_title("XZ Mean Density")
     axes[0].set_xlabel("X (m)")
     axes[0].set_ylabel("Z (m)")
     plt.colorbar(c1, ax=axes[0])
 
-    c2 = axes[1].contourf(Y_yz, Z_yz, rho_yz, 30, vmin=vmin, vmax=vmax)
+    c2 = axes[1].contourf(Y_yz, Z_yz, rho_yz, 30, vmin=vmin, vmax=vmax, cmap="plasma")
     axes[1].plot(bary[1], bary[2], "xk", markersize=4)
     axes[1].set_title("YZ Mean Density")
     axes[1].set_xlabel("Y (m)")
     axes[1].set_ylabel("Z (m)")
     plt.colorbar(c2, ax=axes[1])
 
-    c3 = axes[2].contourf(X_xy, Y_xy, rho_xy, 30, vmin=vmin, vmax=vmax)
+    c3 = axes[2].contourf(X_xy, Y_xy, rho_xy, 30, vmin=vmin, vmax=vmax, cmap="plasma")
     axes[2].plot(bary[0], bary[1], "xk", markersize=4)
     axes[2].set_title("XY Mean Density")
     axes[2].set_xlabel("X (m)")
@@ -248,7 +248,7 @@ def main():
     last_contour = None
     for ax, z in zip(axes, z_levels):
         gz = gz_dict[z]
-        last_contour = ax.contourf(X, Y, gz, 30, vmin=vmin, vmax=vmax)
+        last_contour = ax.contourf(X, Y, gz, 30, vmin=vmin, vmax=vmax, cmap="plasma")
         ax.set_title(f"gz at z = {z} m")
         ax.set_xlabel("X (m)")
         ax.set_ylabel("Y (m)")
