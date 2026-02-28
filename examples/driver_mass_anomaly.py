@@ -35,10 +35,10 @@ def compute_mass_properties(x, y, z, rho):
     bary_y = np.sum(mass_cells * y) / total_mass
     bary_z = np.sum(mass_cells * z) / total_mass
 
-    print("Total mass:", total_mass)
-    print("Barycentre:", bary_x, bary_y, bary_z)
-    print("Max density:", np.max(rho))
-    print("Mean density:", np.mean(rho))
+    print(f'Total mass: \n{total_mass} m')
+    print(f'Barycentre: \n{bary_x} m, \n{bary_y} m, \n{bary_z} m')
+    print(f'Max density: \n{np.max(rho)} kg/m^3')
+    print(f'Mean density: \n{np.mean(rho)} kg/m^3')
 
     return total_mass, np.array([bary_x, bary_y, bary_z])
 
@@ -92,19 +92,18 @@ def plot_density_sections(x, y, z, rho, bary):
     plt.close(fig)
     print(f"Saved: {output1}")
 
-#Calculating the region of non-zero density:
-def compute_region_stats(x, y, z, rho, frac=0.10):
-    threshold = frac * np.max(rho)
+#Calculating the non-negligible region:
+def compute_non_neg_regions(x, y, z, rho, frac=0.10):
+    threshold = frac * float(np.max(rho))
     mask = rho >= threshold
+    if not np.any(mask):
+        raise ValueError("No cells above threshold")
 
-    print("\nNon-negligible region:")
-    print("Threshold:", threshold)
-    print("X range:", (x[mask].min(), x[mask].max()))
-    print("Y range:", (y[mask].min(), y[mask].max()))
-    print("Z range:", (z[mask].min(), z[mask].max()))
-    print("Mean density:", np.mean(rho[mask]))
-
-    return mask
+    mean_region = float(np.mean(rho[mask]))
+    x_reg = (float(x[mask].min()), float(x[mask].max()))
+    y_reg = (float(y[mask].min()), float(y[mask].max()))
+    z_reg = (float(z[mask].min()), float(z[mask].max()))
+    return threshold, mean_region, x_reg, y_reg, z_reg, mask
 
 
 #Forward modelling the gravity:
@@ -207,7 +206,17 @@ def main():
 
     plot_density_sections(x, y, z, rho, bary)
 
-    compute_region_stats(x, y, z, rho)
+    compute_non_neg_regions(x, y, z, rho)
+
+    #Printing coordinates for non-negligible region:
+    threshold, mean_region, x_reg, y_reg, z_reg, _mask = compute_non_neg_regions(x, y, z, rho, frac=0.10)
+
+    print('\n=== Non-negligible Region (rho >= 10% max) ===')
+    print(f'Threshold used: \n{threshold:.6e} kg/m^3')
+    print(f'x range: \n{x_reg} m')
+    print(f'y range: \n{y_reg} m')
+    print(f'z range: \n{z_reg} m')
+    print(f'Mean density in region: \n{mean_region:.6e} kg/m^3')
 
     elevations = [0.0, 1.0, 100.0, 110.0]
     results = []
